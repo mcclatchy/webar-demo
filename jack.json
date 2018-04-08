@@ -1,0 +1,8 @@
+[
+
+{"title":"Bolton in the Oval Office", "pos":"0 .15  0", "rot":"0 -15 0", "scale":".8 .8 .8" , "fileName":"oval-off"},
+{"title":"Donald (tiny hands) Trump", "pos":"0 0.2 0", "rot":"0 15 0", "scale":"1.2 1.2 1.2" , "fileName":"donald"},
+{"title":"Barack (big ears) Obama", "pos":"0 0.2 0", "rot":"0 20 0", "scale":"1.2 1.2 1.2" , "fileName":"obama"},
+{"title":"Fido and his Frisbee", "pos":"0 0.3 0", "rot":"0 10 0", "scale":"1 1 1" , "fileName":"dog"},
+{"title":"Up and away", "pos":"0 0.2 0", "rot":"0 10 0", "scale":"1 1 1" , "fileName":"plane"}
+]

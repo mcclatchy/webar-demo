@@ -1,0 +1,715 @@
+<html>
+	<head>
+
+		<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+		
+		<!-- Custom Addition to triggers event(s) when markers appea, Line 8353 -->
+		<script src="custom-aframe-ar.js"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.min.js"
+			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			crossorigin="anonymous">
+		</script>
+
+		<!-- Pretty PopUps used in 2017 share function -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+		
+		<!-- Easy text in aframe -->
+		<script src="https://unpkg.com/aframe-text-geometry-component@0.5.1/dist/aframe-text-geometry-component.min.js"></script> 
+		
+		<!-- Custom Aframe Component for Volumetric Video -->
+		<script src="volu-vid-component.js"></script>
+
+		<!-- Font Awesome Glyphs -->			
+		<link href="https://sandbox.video/blog/themes/demo/assets/css/font-awesome.min.css" rel="stylesheet">
+		
+		<!-- Cartoon Font -->
+		<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave" rel="stylesheet">
+				
+	     <!-- RGBD shaders -->	    
+	    <script id="vs" type="x-shader/x-vertex">
+	      vec3 rgb2hsl( vec3 color ) {
+	        float h = 0.0;
+	        float s = 0.0;
+	        float l = 0.0;
+	        float r = color.r;
+	        float g = color.g;
+	        float b = color.b;
+	        float cMin = min( r, min( g, b ) );
+	        float cMax = max( r, max( g, b ) );
+	        l =  ( cMax + cMin ) / 2.0;
+	        if ( cMax > cMin ) {
+	          float cDelta = cMax - cMin;
+	          // saturation
+	          if ( l < 0.5 ) {
+	            s = cDelta / ( cMax + cMin );
+	          } else {
+	            s = cDelta / ( 2.0 - ( cMax + cMin ) );
+	          }
+	          // hue
+	          if ( r == cMax ) {
+	            h = ( g - b ) / cDelta;
+	          } else if ( g == cMax ) {
+	            h = 2.0 + ( b - r ) / cDelta;
+	          } else {
+	            h = 4.0 + ( r - g ) / cDelta;
+	          }
+	          if ( h < 0.0) {
+	            h += 6.0;
+	          }
+	          h = h / 6.0;
+	        }
+	        return vec3( h, s, l );
+	      }
+	      // camera intrinsics from metadata file
+	      uniform float mindepth;
+	      uniform float maxdepth;
+	      uniform float imageWidth;
+	      uniform float imageHeight;
+	      uniform float focalX;
+	      uniform float focalY;
+	      uniform float principleX;
+	      uniform float principleY;
+	      uniform sampler2D map;
+	      varying float visibility;
+	      varying vec2 vUv;
+	      // projection formula
+	      vec3 xyz( float x , float y, float depth ) {
+	        float z = depth * ( maxdepth - mindepth ) + mindepth;
+	        return vec3(
+	       // The shader as it is written operates on a scale that seems about
+	       // 100x larger than units in AFRAME
+	       // Scale hack,
+	               0.01 * ((x - principleX)  * z / focalX) ,
+	               0.01 * ((y - principleY) * z / focalY),
+	               0.01 * (-z) );
+	      }
+	      void main() {
+	        vUv = vec2 (position.x/imageWidth, position.y/imageHeight);
+	        vUv.y = vUv.y * 0.5;// + 0.5;
+	        vec3 hsl = rgb2hsl( texture2D( map, vUv ).xyz );
+	        vec4 pos = vec4( xyz( position.x, position.y, hsl.x ), 5.0 );
+	        // Positioning the cloud
+	        // pos.x -= 07.0; Puts the base of the video in the right spot for rotated DepthKit video
+	        pos.z += 000.0;
+	        pos.y += 00.0;
+	        pos.x -= 07.0;
+	        visibility = hsl.z * 2.0;
+	        gl_PointSize = 6.0;
+	        gl_Position = projectionMatrix * modelViewMatrix * pos;
+	      }
+	    </script>
+	
+	    <script id="fs" type="x-shader/x-fragment">
+	      uniform sampler2D map;
+	      uniform float opacity;
+	      varying float visibility;
+	      varying vec2 vUv;
+	      void main() {
+	        if ( visibility < 0.75 ) discard;
+	        vec4 color = texture2D( map, vUv + vec2(0.0, 0.5) );
+	        color.w = opacity;
+	        gl_FragColor = color;
+	      }
+	    </script>
+		
+	</head>
+
+	<style>
+		picker{
+			color:#92c1fb;
+		}
+		
+		a{
+			color:#00ddff;
+			text-decoration: none;
+			-webkit-text-stroke-width: 1px;
+			-webkit-text-stroke-color: #555;
+		}
+		a:hover{
+			color:#ffeb35;
+		}
+		
+		body{
+		color:#000;	
+		font-family: 'Sedgwick Ave' , sans-serif;
+		}
+		
+		
+		.active{
+			font-size: 2vw;
+			color: #ffeb35;			
+			margin:1px;
+		}		
+		
+		.inactive{
+			color:rgba(255,255,255, 0.1);
+			font-size: 2vw;
+			margin:1vw;
+			-webkit-text-stroke-width: 1px;
+			-webkit-text-stroke-color: #555;
+		}
+		
+		.dontUse{
+			pointer-events: none;
+			opacity: .2;
+		}
+		
+		.use{
+			pointer-events: auto;
+			opacity: 1;
+		}
+		
+		
+		.bubble 
+		{
+		position: relative;
+		padding: 2px;
+		background: #Eee;
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+		border: #363139 solid 1px;
+		width:85%;
+		}
+		
+		.bubble:after 
+		{
+		content: '';
+		position: absolute;
+		border-style: solid;
+		border-width: 0 6px 7px;
+		border-color: #eee transparent;
+		display: block;
+		width: 0;
+		z-index: 1;
+		top: -6px;
+		left: 17px;
+		}
+		
+		.bubble:before 
+		{
+		content: '';
+		position: absolute;
+		border-style: solid;
+		border-width: 0 6px 7px;
+		border-color: #363139 transparent;
+		display: block;
+		width: 0;
+		z-index: 0;
+		top: -8px;
+		left: 17px;
+		}
+		
+		.alignleft {
+		  float: left;
+		  width:5%;
+		  text-align:left;
+		  margin: 0px;
+		  padding: 0px;
+		}
+		.aligncenter {
+		  float: left;
+		  width:90%;
+		  text-align:center;
+		  margin: 0px;
+		  padding: 0px;
+		}
+		.alignright {
+		 float: left;
+		 width:5%;
+		 text-align:right;
+		 margin: 0px;
+		 padding: 0px;
+		}​
+		
+		
+	</style>
+
+	<body>
+		
+
+		<!-- UI Block -->
+		<div style="z-index:100; position:absolute; background-color: rgba(0,0,0,0);  pointer-events: none; position:fixed; height:100%; top:0px; width:96%; left:0px; font-size:2vh;">
+			
+			<div id="galleryUI" style=" display:none; text-align: center; ">
+				<div style="  position:absolute; pointer-events: auto; width:100%; padding:0px;">			
+					<div id="progress" style="text-align:center; font-size: 10vw;">	
+
+					</div>
+				</div>	
+	
+				<div  class="bubble" style="position:absolute; pointer-events: auto; bottom:10px; margin-left:10%; margin-right: 10% ; ">
+					  
+					<div style="font-size:4vw ; padding:15px;">
+						
+						<p class="alignleft">
+						
+							<a id="laster" style="vertical-align: middle; display: none;"  href="javascript:last();">
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>
+							</a>
+							
+						</p>
+							
+						<p id="title" class="aligncenter" style="vertical-align: middle;" >c AR toons by Jack Ohman<span>
+						
+						<p class="alignright">
+							<a id="nexter" style="vertical-align: middle;"  href="javascript:next();">
+								<i class="fa fa-chevron-right" aria-hidden="true"></i>
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>	
+
+
+			<div style="  position: relative; top: 50%; margin:2%; transform: translateY(-50%);">
+				
+				<div id="loader" style="width:100%; font-size:5vw; text-align:center; display: inline-block;">
+					<i class="fa fa-spinner fa-spin" aria-hidden="true"></i><BR> Loading
+				</div>
+
+				<a id="playbutton" style="font-size:30vw; display:none;  top:15%; left:33%; position:absolute; pointer-events: auto;" href="javascript:document.getElementById('fixed-frame').play();document.getElementById('playbutton').style('display:none;');">
+					<i class="fa fa-play-circle" aria-hidden="true"></i>
+				</a>	
+			</div>
+		</div>
+	  
+	<a-scene id="scene" embedded arjs='sourceType: webcam; debugUIEnabled: false;' vr-mode-ui="enabled: false">
+		<a-assets id="assets" timeout="100000">
+			<video id="fixed-frame" autoplay loop src="jack_assets/ohmandoc.m4v"></video>
+<!--			
+			<a-asset-item id="exoFont" src="https://cdn.glitch.com/c719c986-c0c5-48b8-967c-3cd8b8aa17f3%2Fexo2Black.typeface.json?1490305922150"></a-asset-item>
+-->			
+				
+			<img id="sky" src="env.jpg" crossorigin="anonymous" />
+			<img id="sky-dark" src="env-dark.jpg" crossorigin="anonymous" />
+		    <a-asset-item id="Theater-obj" src="jack_assets/Theater.obj"></a-asset-item>
+			<a-asset-item id="Theater-mtl" src="jack_assets/Theater.mtl"></a-asset-item>
+		</a-assets>
+			  	
+		<a-marker play-on-scan id="hiro" preset='hiro'>
+			<a-entity id="hiroStuff" scale="0 0 0">
+				
+
+<!--				
+				<a-entity text="value:C    TOONS; color:#000000; shader: msdf; height:1; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/sedgwickavedisplay/SedgwickAveDisplay-Regular.json" scale="7 7 7" position="3.09 .9 .02" rotation="" visible="" material="color:#555; metalness:1; roughness: 0.0; sphericalEnvMap: #sky;"></a-entity>
+				<a-entity text="value:by; color:#000000; shader: msdf; height:1; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/sedgwickavedisplay/SedgwickAveDisplay-Regular.json" scale="3 3 3" position="1.25 .75 .02" rotation="" visible="" material="color:#555; metalness:1; roughness: 0.0; sphericalEnvMap: #sky;"></a-entity>
+
+					
+<a-entity position="-.2 1 0" scale=".125 .18 .125" text-geometry="value: AR; font: #exoFont; bevelEnabled: true; bevelSize: 0.1; bevelThickness: 0.1; curveSegments: 1; size: 1.5; height: 0.3;" material="color:#92c1fb; metalness:0.9; roughness: 0.05; sphericalEnvMap: #sky-dark;"></a-entity>
+-->
+				<a-animation id="animate_in_hiro" attribute="scale" begin="animate-in-hiro" easing="ease" fill="forwards" from="0 0 0" to="1 1 1" dur="1500"></a-animation>
+				<a-sphere id="center" material="side: double; color: #ffffff; transparent: true; opacity: 0.5"  visible="true" radius="8">
+				</a-sphere>
+				<a-entity id="stageOne" >
+								
+					<a-cylinder height=".04" radius="0.45"  shadow="receive: true" material="color:white; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
+					<a-cylinder height=".04" radius="0.5" position="0 -0.05 0" material="color:#eeeeee; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
+					<a-cylinder height=".04" radius="0.55" position="0 -0.1 0" material="color:#cccccc; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
+				</a-entity>
+			</a-entity>
+		</a-marker>
+
+
+<!-- Kanji for Android				
+		<a-marker play-on-scan id="kanji" preset='kanji'>
+			
+			<a-entity id="fullJackScene" scale="1.3 1.3 1.3" rotate="0 180 0" >
+				<a-entity position ="0 0 0.475"> 
+					<a-entity rgbd-video="depthFocalLengthX:364.801;depthFocalLengthY:364.801;depthPrincipalPointX:257.002;depthPrincipalPointY:207.339;farClip:1204;nearClip:434" position="1.506 1 0.368" scale="1 1 0.5" rotation="0 11.344564343590301 0"></a-entity>	
+					
+					<a-entity position="-0.099 0.762 0.11723128954908402">
+						<a-entity gltf-model="jack_assets/jacksigbig.gltf" scale="0.3172493692677065 0.3172493692677065 0.3172493692677065" rotation="3.134519705135785 -156.44141568818014 -7.147891789649802" material="flatShading:true">
+							<a-animation attribute="scale" dur="2000" from="0.442 0.442 0.442" to=" .15 .15 .15" direction="alternate-reverse" easing="ease-in-out-circ" repeat="indefinite"></a-animation>
+						</a-entity>
+				    </a-entity>
+	
+					<a-entity id="chair">
+					    <a-entity position="-0.09163589951402693 0.259 -0.458" scale="0.137 0.029 0.31847061810817034" id="Chair" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
+						<a-entity position="-0.08612916203814716 0.538 -0.5887897935817903" rotation="-85.485 180.023 180.023" scale="0.123 0.022 0.2542389053324183" id="Chair-2" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
+						<a-entity position="0.033 0.131 -0.366" scale="0.012 0.271592006465578 0.011" id="chair leg" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+						<a-entity position="0.033 0.131 -0.557" scale="0.012 0.272 0.011" id="chair leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+						<a-entity position="-0.083 0.390525926584711 -0.6075130003805376" rotation="-8.308 0 0" scale="0.03351838044091261 0.332 0.007" id="leg-4" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+						<a-entity position="-0.222 0.133 -0.557" scale="0.012 0.272 0.011" id="leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+						<a-entity position="-0.22195693540447045 0.131 -0.366" scale="0.012 0.272 0.011" id="chair leg-2" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+					</a-entity>			                    
+					    
+				<a-entity position="0.014955915884175757 0.1834162714932471 -0.375" scale="0.7404458572014967 0.7404458572014967 0.7404458572014967">
+					<a-entity gltf-model="jack_assets/scene.gltf" scale="0.0003 0.0003 0.0003" position="0 0.9 0"></a-entity>
+				</a-entity>
+			</a-entity>
+			<a-box scale="1.3 .05 1.3" position="-.1 -0.05 0" rotation="0 45 0" material="metalness:1; roughness: 0.5; sphericalEnvMap: #sky; color:#4e6331" ></a-box>
+			<a-box scale="1.3 .05 1.3" position="-.1 -0.1 0" rotation="0 45 0" material="metalness:1; roughness: 0.5; sphericalEnvMap: #sky; color:#c4a15d" ></a-box>
+
+		</a-marker>
+ -->		
+
+		<a-marker play-on-scan id="kanji" preset='kanji'>
+		<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 -.65" scale=".13 .13 .13" ></a-video>
+		<a-entity id="Theater" obj-model="obj:#Theater-obj; mtl:#Theater-mtl;" position="" rotation="" scale=".02 .02 .02" visible=""></a-entity>
+		</a-marker>	
+
+		<!-- define a simple camera -->
+		<a-entity camera></a-entity> 
+	</a-scene>
+    
+   
+    
+    <script>
+	    
+	   var kanji;
+	    
+	   function PopUpShare(){
+		    
+		    sweetAlert('To share this specific scan copy the following URL: \n \n http://sandbox.video/epad17/?model='+(CurrentModel+1));
+		    
+	    }
+	    
+	    TargetModel = 1;
+	    CurrentModel = 0;
+	    
+	    function bookends(){
+		    
+		    if(TargetModel+1 == loopLength){
+			document.getElementById("nexter").style.display = "none";
+	       	}else if(TargetModel == 0){
+			document.getElementById("laster").style.display = "none";
+		   }else{
+			document.getElementById("nexter").style.display = "inline-block";
+			document.getElementById("laster").style.display = "inline-block";		     
+		    
+	    }
+	    }
+	    
+	    function transitionModels() {
+		    console.log('take out' + CurrentModel +'| bring in' + TargetModel);
+		    //document.querySelector('#nowPlaying').innerHTML = CurrentModel;
+			document.querySelector('#model'+CurrentModel).emit('transition-out-scale');
+			document.querySelector('#model'+CurrentModel).emit('transition-out-pos');
+			document.querySelector('#model'+TargetModel).emit('transition-in-pos');
+			document.querySelector('#model'+TargetModel).emit('transition-in-scale');
+				
+				setTimeout(removeOldModel, 1500);
+				
+				function removeOldModel() {
+					document.querySelector('#model'+CurrentModel).parentNode.removeChild(document.querySelector('#model'+CurrentModel));
+				CurrentModel = TargetModel;
+				
+				console.log('Now ' + CurrentModel + 'is current.');
+				
+				document.getElementById("nexter").classList.add("Use");
+				document.getElementById("laster").classList.add("Use");
+				}
+				
+				bookends();
+				
+			}
+   
+       function next() {	
+		   	
+		   	document.getElementById('loader').style.display = "inline-block";
+		   	
+		    TargetModel = CurrentModel+1;
+	       
+	       console.log('Nexting to '+ TargetModel );
+
+
+	       	console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+		   // document.querySelector('#nowPlaying').innerHTML = TargetModel;
+		    createAEnity(TargetModel,json);
+		    document.getElementById("mtl"+TargetModel).addEventListener("loaded", transitionModels());
+		    
+			document.getElementById("indicator"+TargetModel).classList.add("active");
+			document.getElementById("indicator"+TargetModel).classList.remove("inactive");
+
+			document.getElementById("indicator"+CurrentModel).classList.add("inactive");
+			document.getElementById("indicator"+CurrentModel).classList.remove("active");
+
+			document.getElementById("nexter").classList.remove("Use");
+			document.getElementById("laster").classList.remove("Use");			
+			document.getElementById("nexter").classList.add("dontUse");
+			document.getElementById("laster").classList.add("dontUse");
+			     	
+	    }		
+
+
+    var pos, scale, rot, title;
+       function last() {	
+	       
+	        document.getElementById('loader').style.display = "inline-block";
+	        
+		    TargetModel = CurrentModel-1;		     
+
+		    console.log('Lasting to '+ TargetModel );
+		    console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+		    
+			document.getElementById("indicator"+TargetModel).classList.add("active");
+			document.getElementById("indicator"+TargetModel).classList.remove("inactive");
+
+			document.getElementById("indicator"+CurrentModel).classList.add("inactive");
+			document.getElementById("indicator"+CurrentModel).classList.remove("active");
+			
+			document.getElementById("nexter").classList.remove("Use");
+			document.getElementById("laster").classList.remove("Use");			
+			document.getElementById("nexter").classList.add("dontUse");
+			document.getElementById("laster").classList.add("dontUse");	
+	       
+
+		    //document.querySelector('#nowPlaying').innerHTML = TargetModel;
+		   // createAEnity(i,json);
+		     
+		   // document.getElementById("mtl"+i).addEventListener("loaded", transitionModels);
+		    createAEnity(TargetModel,json);
+		    document.getElementById("mtl"+TargetModel).addEventListener("loaded", transitionModels());
+			
+	    }	
+
+		function hideLoader(){
+			
+			document.getElementById('loader').style.display = "none";
+			
+		};
+
+		   
+	   function createAModel(TargetModel){
+		   console.log( pos, rot, scale );
+		   console.log('creating model' +TargetModel);
+		   
+		   document.getElementById('title').innerHTML=title;
+		   
+		   	var model = document.createElement('a-entity');
+			model.setAttribute('id', 'model'+TargetModel);
+			model.setAttribute('obj-model', 'obj: #obj'+TargetModel+'; mtl: #mtl'+TargetModel );
+			model.setAttribute('position', pos);
+			model.setAttribute('rotation', rot);
+			model.setAttribute('scale', scale );
+			model.setAttribute('do-something-once-loaded', '');
+			model.addEventListener("model-loaded", function(){ hideLoader(); });
+			
+			var animateInPos = document.createElement('a-animation');
+			animateInPos.setAttribute('id', 'animate_in_pos');
+			animateInPos.setAttribute('attribute', 'position');
+			animateInPos.setAttribute('begin', 'transition-in-pos');
+			animateInPos.setAttribute('easing', 'ease-out');
+			animateInPos.setAttribute('from', '2 1 0');
+			animateInPos.setAttribute('to', pos);
+			animateInPos.setAttribute('dur', '1500');
+
+			var animateOutPos = document.createElement('a-animation');
+			animateOutPos.setAttribute('id', 'animate_out_pos');
+			animateOutPos.setAttribute('attribute', 'position');
+			animateOutPos.setAttribute('begin', 'transition-out-pos');
+			animateOutPos.setAttribute('easing', 'ease-out');
+			animateOutPos.setAttribute('to', '-2 1 0');
+			animateOutPos.setAttribute('dur', '1500');
+
+			var animateInScale = document.createElement('a-animation');
+			animateInScale.setAttribute('id', 'animate_in_scale');
+			animateInScale.setAttribute('attribute', 'scale');
+			animateInScale.setAttribute('begin', 'transition-in-scale');
+			animateInScale.setAttribute('easing', 'ease-out');
+			animateInScale.setAttribute('to', scale);
+			animateInScale.setAttribute('dur', '1500');
+
+			var animateOutScale = document.createElement('a-animation');
+			animateOutScale.setAttribute('id', 'animate_out_scale');
+			animateOutScale.setAttribute('attribute', 'scale');
+			animateOutScale.setAttribute('begin', 'transition-out-scale');
+			animateOutScale.setAttribute('easing', 'ease-out');
+			animateOutScale.setAttribute('to', pos);
+			animateOutScale.setAttribute('dur', '1500');
+
+
+			document.getElementById('hiro').appendChild(model);
+			document.getElementById('model'+TargetModel).appendChild(animateOutPos);
+			document.getElementById('model'+TargetModel).appendChild(animateInPos);
+			document.getElementById('model'+TargetModel).appendChild(animateOutScale);
+			document.getElementById('model'+TargetModel).appendChild(animateInScale);
+
+		   
+	   }
+	   
+	   
+	    
+	    function createAEnity(TargetModel,json){
+		    
+		    console.log('Create Entity' +TargetModel);
+			 
+		 	var obj = 'jack_assets/' + json[TargetModel]['fileName'] + '.obj';
+		 	var mtl = 'jack_assets/black.mtl';
+		 	pos = json[TargetModel]['pos'];
+		 	scale = json[TargetModel]['scale'];
+		 	rot = json[TargetModel]['rot'];		
+		 	title = json[TargetModel]['title'];		 
+		 	
+		 	console.log(pos, scale, rot);			 	
+		 	
+		 	var objAsset = document.createElement('a-asset-item');
+			objAsset.setAttribute('id', 'obj'+TargetModel);
+			objAsset.setAttribute('src', obj);	
+			
+			
+			var mtlAsset = document.createElement('a-asset-item');
+			mtlAsset.setAttribute('id', 'mtl'+TargetModel);
+			mtlAsset.setAttribute('src', mtl);
+			
+			document.getElementById('assets').appendChild(objAsset);
+			document.getElementById('assets').appendChild(mtlAsset);   
+			
+			createAModel(TargetModel);
+						
+	    }
+	    
+
+	    
+
+	     if (getQueryVariable('model') !== false) {
+		 	console.log('deeplinked');
+		 	console.log(getQueryVariable('model'));
+			  var deeplink = getQueryVariable('model')-1;
+			  console.log(deeplink);
+			}else{
+				console.log('regular');	
+				var deeplink = 0;
+			} 
+			
+		CurrentModel = deeplink;
+
+		document.querySelector('a-scene').addEventListener('loaded', function () {
+			console.log('Initial Scene loaded');
+			json = {};
+		    $.ajax({
+		        url: "https://sandbox.video/epad17/jack.json",
+		        async: true,
+		        dataType: 'json',
+		        success: function(data) {
+		            json = data;
+			    	console.log('JSON loaded');
+			    	console.table('json');
+					createAEnity(CurrentModel,json);	
+					//document.querySelector('#model'+deeplink).emit('transition-in');
+					
+					loopLength = json.length;	
+			    	console.log(loopLength);
+			    	
+			    	for ( var i = 0, l = loopLength; i < l; i++ ) {
+				    	console.log(i);
+				    	// <i id="indicator1" class="fa fa-circle active" aria-hidden="true"></i> 
+						var indicator = document.createElement('i');
+						indicator.setAttribute('id', 'indicator'+ i );
+						indicator.setAttribute('aria-hidden', 'true' );
+						
+						if(i == 0){
+						indicator.setAttribute('class', 'fa fa-circle active' );
+						}else{
+						indicator.setAttribute('class', 'fa fa-circle inactive' );	
+						}
+						
+						document.getElementById('progress').appendChild(indicator);
+					
+					}
+			
+/*					var x=0;
+			
+					json.forEach(function(model){
+			
+						this["img"+x] = new Image();
+						this["img"+x].src = model['texture'];	
+						});
+*/			
+			
+
+
+
+		        }
+		    });
+		
+/*			$.getJSON("gallery.json", function(json) {
+
+			});				
+*/
+		})
+		
+
+		
+		
+		function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
+
+var hiroLoop = 0;
+
+			AFRAME.registerComponent('play-on-scan', {
+			  init: function () {
+			    var el = this.el;
+			    el.addEventListener('markerFound', function () {
+				    console.log('marker ' + el.id );
+				    
+				    if(el.id == 'hiro' && hiroLoop == 0 ){
+					    document.getElementById("galleryUI").style.display = "inline-block";
+					    hiroLoop = 1;
+					    document.getElementById('hiroStuff').emit('animate-in-hiro');
+					    console.log('emitted');
+				    }
+				    
+				    kanji = true;
+				  //  console.log('kanji ' + kanji);
+				    
+				    isPaused = document.getElementById("fixed-frame").paused;
+				    //console.log('isPaused' + isPaused );
+				    if (kanji && isPaused){
+					    	document.getElementById("playbutton").style.display = "inline-block";
+						}
+			     // console.log('KANJI IS HERE');
+			    });
+			    
+			    el.addEventListener('markerGone', function () {
+				    
+				    if(el.id == 'hiro'){
+					    document.getElementById("galleryUI").style.display = "none";
+					     hiroLoop = 0;
+				    }
+				    
+			      //console.log('KANJI IS Gone');
+			        kanji = false;
+				   // console.log('kanji ' + kanji);
+			        
+			        isPaused = document.getElementById("fixed-frame").paused;
+				   // console.log('isPaused' + isPaused );
+				    
+			        document.getElementById("playbutton").style.display = "none";
+			    });
+
+			  }
+			});
+
+
+			AFRAME.registerComponent('do-something-once-loaded', {
+			  init: function () { console.log('Asset says it is loaded'); }
+			});
+		
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-101348884-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
