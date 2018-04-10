@@ -352,7 +352,7 @@
 			<a-entity id="kanji_stuff">	
 				<a-animation id="animate_in_kanji-2" attribute="position" begin="animate-in-hiro" easing="ease" fill="forwards" from="0 -3 0" to="0 0.05 0" dur="2500"></a-animation>
 				
-				<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 -.65" scale=".13 .13 .13" ></a-video>
+				<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 .65" rotation="0 180 0" scale=".13 .13 .13" ></a-video>
 				<a-entity id="Theater" obj-model="obj:#Theater-obj; mtl:#Theater-mtl;" position="" rotation="0 180 0" scale=".02 .02 .02" visible=""></a-entity>
 					
 			</a-entity>		
@@ -679,7 +679,7 @@ var kanjiLoop = 0;
 					    	document.getElementById("playbutton").style.display = "inline-block";
 						}
 				    
-				    if (kanji && kanjiLoop==0){
+				    if (kanji && kanjiLoop == 0){
 					kanjiLoop = 1;
 					document.getElementById('animate_in_kanji-1').emit('animate-in-hiro');
 					document.getElementById('animate_in_kanji-2').emit('animate-in-hiro');
@@ -692,6 +692,11 @@ var kanjiLoop = 0;
 				    if(el.id == 'hiro'){
 					    document.getElementById("galleryUI").style.display = "none";
 					     hiroLoop = 0;
+				    }
+				    
+				    if(el.id == 'kanji'){
+
+					     kanjiLoop = 0;
 				    }
 				    
 			      //console.log('KANJI IS Gone');
