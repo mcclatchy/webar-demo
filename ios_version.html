@@ -347,7 +347,7 @@
  -->		
 
 		<a-marker play-on-scan id="kanji" preset='kanji'>
-		<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 -.65" scale=".13 .13 .13" ></a-video>
+		<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 -.65" scale=".13 .13 .13" rotation="0 180 0" ></a-video>
 		<a-entity id="Theater" obj-model="obj:#Theater-obj; mtl:#Theater-mtl;" position="" rotation="" scale=".02 .02 .02" visible=""></a-entity>
 		</a-marker>	
 
@@ -538,7 +538,7 @@
 		    console.log('Create Entity' +TargetModel);
 			 
 		 	var obj = 'jack_assets/' + json[TargetModel]['fileName'] + '.obj';
-		 	var mtl = 'jack_assets/black.mtl';
+		 	var mtl = 'jack_assets/' + json[TargetModel]['mtl'] + '.mtl';
 		 	pos = json[TargetModel]['pos'];
 		 	scale = json[TargetModel]['scale'];
 		 	rot = json[TargetModel]['rot'];		
