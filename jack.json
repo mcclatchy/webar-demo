@@ -1,8 +1,13 @@
 [
-
-{"title":"Bolton in the Oval Office", "pos":"0 .15  0", "rot":"0 -15 0", "scale":".8 .8 .8" , "fileName":"oval-off"},
-{"title":"Donald (tiny hands) Trump", "pos":"0 0.2 0", "rot":"0 15 0", "scale":"1.2 1.2 1.2" , "fileName":"donald"},
-{"title":"Barack (big ears) Obama", "pos":"0 0.2 0", "rot":"0 20 0", "scale":"1.2 1.2 1.2" , "fileName":"obama"},
-{"title":"Fido and his Frisbee", "pos":"0 0.3 0", "rot":"0 10 0", "scale":"1 1 1" , "fileName":"dog"},
-{"title":"Up and away", "pos":"0 0.2 0", "rot":"0 10 0", "scale":"1 1 1" , "fileName":"plane"}
+{"title":"cARtoons by Jack Ohman", "pos":"-.3 .5  0", "rot":"90 0 0", "scale":"2 2 2" , "fileName":"title_b", "mtl":"title_b"},
+{"title":"Bolton in the Oval Office", "pos":"0 .15  0", "rot":"0 -15 0", "scale":".8 .8 .8" , "fileName":"oval-off", "mtl":"black"},
+{"title":"Donald (tiny hands) Trump", "pos":"0 0.2 0", "rot":"0 15 0", "scale":"1.2 1.2 1.2" , "fileName":"donald", "mtl":"black"},
+{"title":"Barack (big ears) Obama", "pos":"0 0.2 0", "rot":"0 20 0", "scale":"1.2 1.2 1.2" , "fileName":"obama", "mtl":"black"},
+{"title":"Fido and his Frisbee", "pos":"0 0.3 0", "rot":"0 10 0", "scale":"1 1 1" , "fileName":"dog", "mtl":"black"},
+{"title":"Sea Scene", "pos":"0 0.2 0", "rot":"0 30 0", "scale":"1 1 1" , "fileName":"sea-scene", "mtl":"black"},
+{"title":"Charlotte Observer's 3D Scans", "pos":"0 .2 0", "rot":"90 0 0", "scale":".8 .8 .8" , "fileName":"charlotte-title", "mtl":"charlotte-title" },
+{"title":"The Algerian costume for Etoile", "pos":"0 0 0", "rot":"0 0 0", "scale":".8 .8 .8" , "fileName":"Dress-One", "mtl":"Dress-One" },
+{"title":"Butterfly Costume", "pos":"0 0 0", "rot":"0 0 0", "scale":".8 .8 .8" , "fileName":"dress-two", "mtl":"dress-two" },
+{"title":"Kristin Chenoweth wore this dress as 'Babette'", "pos":"0 0 0", "rot":"0 0 0", "scale":".8 .8 .8" , "fileName":"dress-three", "mtl":"dress-three" },
+{"title":"Credit: Jayson Chesler, Ben Connors, Jack Ohman, Andy Polino, Julian Rojas, John D. Simmons, Charlie Velazquez", "pos":"0 .1 0", "rot":"0 0 0", "scale":"1.8 1.8 1.8" , "fileName":"mcc-smooth", "mtl":"mcc-smooth" }
 ]
