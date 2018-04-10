@@ -405,7 +405,7 @@
 					document.querySelector('#model'+CurrentModel).parentNode.removeChild(document.querySelector('#model'+CurrentModel));
 				CurrentModel = TargetModel;
 				
-				console.log('Now ' + CurrentModel + 'is current.');
+				//console.log('Now ' + CurrentModel + 'is current.');
 				
 				document.getElementById("nexter").classList.add("Use");
 				document.getElementById("laster").classList.add("Use");
@@ -421,10 +421,10 @@
 		   	
 		    TargetModel = CurrentModel+1;
 	       
-	       console.log('Nexting to '+ TargetModel );
+	     //  console.log('Nexting to '+ TargetModel );
 
 
-	       	console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+	     //  	console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
 		   // document.querySelector('#nowPlaying').innerHTML = TargetModel;
 		    createAEnity(TargetModel,json);
 		    document.getElementById("mtl"+TargetModel).addEventListener("loaded", transitionModels());
@@ -450,8 +450,8 @@
 	        
 		    TargetModel = CurrentModel-1;		     
 
-		    console.log('Lasting to '+ TargetModel );
-		    console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+		//    console.log('Lasting to '+ TargetModel );
+		//    console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
 		    
 			document.getElementById("indicator"+TargetModel).classList.add("active");
 			document.getElementById("indicator"+TargetModel).classList.remove("inactive");
@@ -482,8 +482,8 @@
 
 		   
 	   function createAModel(TargetModel){
-		   console.log( pos, rot, scale );
-		   console.log('creating model' +TargetModel);
+		//   console.log( pos, rot, scale );
+		//   console.log('creating model' +TargetModel);
 		   
 		   document.getElementById('title').innerHTML=title;
 		   
@@ -543,7 +543,7 @@
 	    
 	    function createAEnity(TargetModel,json){
 		    
-		    console.log('Create Entity' +TargetModel);
+		//    console.log('Create Entity' +TargetModel);
 			 
 		 	var obj = 'jack_assets/' + json[TargetModel]['fileName'] + '.obj';
 		 	var mtl = 'jack_assets/' + json[TargetModel]['mtl'] + '.mtl';
@@ -552,7 +552,7 @@
 		 	rot = json[TargetModel]['rot'];		
 		 	title = json[TargetModel]['title'];		 
 		 	
-		 	console.log(pos, scale, rot);			 	
+		 //	console.log(pos, scale, rot);			 	
 		 	
 		 	var objAsset = document.createElement('a-asset-item');
 			objAsset.setAttribute('id', 'obj'+TargetModel);
@@ -574,19 +574,19 @@
 	    
 
 	     if (getQueryVariable('model') !== false) {
-		 	console.log('deeplinked');
-		 	console.log(getQueryVariable('model'));
+		 //	console.log('deeplinked');
+		 //	console.log(getQueryVariable('model'));
 			  var deeplink = getQueryVariable('model')-1;
-			  console.log(deeplink);
+		//	  console.log(deeplink);
 			}else{
-				console.log('regular');	
+		//		console.log('regular');	
 				var deeplink = 0;
 			} 
 			
 		CurrentModel = deeplink;
 
 		document.querySelector('a-scene').addEventListener('loaded', function () {
-			console.log('Initial Scene loaded');
+		//	console.log('Initial Scene loaded');
 			json = {};
 		    $.ajax({
 		        url: "jack.json",
@@ -594,16 +594,16 @@
 		        dataType: 'json',
 		        success: function(data) {
 		            json = data;
-			    	console.log('JSON loaded');
-			    	console.table('json');
+		//	    	console.log('JSON loaded');
+		//	    	console.table('json');
 					createAEnity(CurrentModel,json);	
 					//document.querySelector('#model'+deeplink).emit('transition-in');
 					
 					loopLength = json.length;	
-			    	console.log(loopLength);
+		//	    	console.log(loopLength);
 			    	
 			    	for ( var i = 0, l = loopLength; i < l; i++ ) {
-				    	console.log(i);
+		//		    	console.log(i);
 				    	// <i id="indicator1" class="fa fa-circle active" aria-hidden="true"></i> 
 						var indicator = document.createElement('i');
 						indicator.setAttribute('id', 'indicator'+ i );
@@ -662,13 +662,13 @@ var kanjiloop= 0;
 			  init: function () {
 			    var el = this.el;
 			    el.addEventListener('markerFound', function () {
-				    console.log('marker ' + el.id );
+		//		    console.log('marker ' + el.id );
 				    
 				    if(el.id == 'hiro' && hiroLoop == 0 ){
 					    document.getElementById("galleryUI").style.display = "inline-block";
 					    hiroLoop = 1;
 					    document.getElementById('hiroStuff').emit('animate-in-hiro');
-					    console.log('emitted');
+		//			    console.log('emitted');
 				    }
 				    
 				    kanji = true;
@@ -713,7 +713,7 @@ var kanjiloop= 0;
 
 
 			AFRAME.registerComponent('do-something-once-loaded', {
-			  init: function () { console.log('Asset says it is loaded'); }
+			  init: function () { // console.log('Asset says it is loaded'); }
 			});
 		
     </script>
