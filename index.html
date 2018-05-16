@@ -322,10 +322,10 @@
 
 <!-- Kanji for Android	-->			
 		<a-marker play-on-scan id="kanji" preset='kanji'>
-			<a-entity>	
+			<a-entity >	
 								<a-sphere id="center" material="side: back; color: #ffffff; transparent: true; opacity: 0.75"  visible="true" radius="16">
 				</a-sphere>
-				<a-entity id="fullJackScene" rotate="0 90 0" position=" -0.4 .2 0 " >
+				<a-entity id="fullJackScene" rotate="0 90 0" position=" 0.4 .2 0 " >
 					<a-animation id="animate_in_kanji-1" attribute="scale" begin="animate-in-hiro" easing="ease-out-back" fill="forwards" from="0 0 0" to="3 3 3" dur="1500"></a-animation>
 	
 					<a-entity position ="0 0 0.475"> 
@@ -351,7 +351,7 @@
 						<a-entity gltf-model="jack_assets/scene.gltf" scale="0.0003 0.0003 0.0003" position="0 0.9 0"></a-entity>
 					</a-entity>
 				</a-entity>
-				<a-animation id="animate_in_kanji-2" attribute="rotation" begin="animate-in-hiro" easing="ease-out-cubic" fill="forwards" from="0 9 0" to="0 180 0" dur="2000"></a-animation>
+				<a-animation id="animate_in_kanji-2" attribute="rotation" begin="animate-in-hiro" easing="ease-out-cubic" fill="forwards" from="0 180 0" to="0 0 0" dur="2000"></a-animation>
 					
 				
 					<a-entity scale=".3 .3 .3" position="-0.1 -0.05 0">
@@ -364,7 +364,7 @@
 			
 					<a-entity id="stageOne" >
 						
-						<a-box scale="3 .05 2.4" position="0 0.0 0" rotation="0 180 0" src="stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>		
+						<a-box scale="3 .05 2.4" position="0 0.0 0" rotation="0 0 0" src="stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>		
 
 
 							</a-entity>
