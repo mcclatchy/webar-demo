@@ -5,5 +5,5 @@
 {"title":"Barack (big ears) Obama", "pos":"0 0.8 0", "rot":"0 20 0", "scale":"3 3 3" , "fileName":"obama", "mtl":"black"},
 {"title":"Fido and his Frisbee", "pos":"0 0.6 0", "rot":"0 10 0", "scale":"3 3 3" , "fileName":"dog", "mtl":"black"},
 {"title":"Sea Scene", "pos":"0 0.8 0", "rot":"0 30 0", "scale":"2.5 2.5 2.5" , "fileName":"sea-scene", "mtl":"black"},  
-{"title":"Credit: New Ventures Lab & Jack Ohman", "pos":"0 .7 0", "rot":"0 0 0", "scale":"3 3 3" , "fileName":"mcc-smooth", "mtl":"mcc-smooth" }
+{"title":"Credit: New Ventures Lab & Jack Ohman", "pos":"0 .7 0", "rot":"0 0 0", "scale":"3 3 3" , "fileName":"NVL-tessarct", "mtl":"NVL-tessarct" }
 ]
