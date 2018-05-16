@@ -22,10 +22,10 @@
 		<script src="volu-vid-component.js"></script>
 
 		<!-- Font Awesome Glyphs -->			
-		<link href="fontawesome/css/font-awesome.min.css" rel="stylesheet">
-		
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 		<!-- Cartoon Font -->
-		<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed" rel="stylesheet">
 				
 	     <!-- RGBD shaders -->	    
 	    <script id="vs" type="x-shader/x-vertex">
@@ -40,7 +40,7 @@
 	        float cMax = max( r, max( g, b ) );
 	        l =  ( cMax + cMin ) / 2.0;
 	        if ( cMax > cMin ) {
-	          float cDelta = cMax - cMin;
+	          float cDelta = cMax - cMin; 
 	          // saturation
 	          if ( l < 0.5 ) {
 	            s = cDelta / ( cMax + cMin );
@@ -122,34 +122,30 @@
 		}
 		
 		a{
-			color:#00ddff;
+			color:#fff;
 			text-decoration: none;
-			-webkit-text-stroke-width: 1px;
-			-webkit-text-stroke-color: #555;
 		}
 		a:hover{
-			color:#ffeb35;
+			color:#eee;
 		}
 		
 		body{
 		color:#000;	
-		font-family: 'Sedgwick Ave' , sans-serif;
+		font-family: 'roboto condensed' , sans-serif;
 		}
 		
 		
 		.active{
-			font-size: 2vw;
-			color: #ffeb35;			
+			font-size: 1vh;
+			color: #fff;			
 			margin:1px;
 		}		
 		
 		.inactive{
-			color:rgba(255,255,255, 0.1);
-			font-size: 2vw;
-			margin:1vw;
-			-webkit-text-stroke-width: 1px;
-			-webkit-text-stroke-color: #555;
-		}
+			color:rgba(255,255,255, 0.3);
+			font-size: 1vh;
+			margin:1vh;
+			}
 		
 		.dontUse{
 			pointer-events: none;
@@ -162,68 +158,60 @@
 		}
 		
 		
-		.bubble 
+		.bubble
 		{
 		position: relative;
-		padding: 2px;
-		background: #Eee;
-		-webkit-border-radius: 15px;
-		-moz-border-radius: 15px;
-		border-radius: 15px;
-		border: #363139 solid 1px;
-		width:85%;
+		background: rgba(0,0,0, 0.8);
+		width:105%;
+		color: #fff;
+		bottom:0px;
+		left:0px;
+		padding-bottom: 10px;
 		}
-		
-		.bubble:after 
+
+		.drag
 		{
-		content: '';
-		position: absolute;
-		border-style: solid;
-		border-width: 0 6px 7px;
-		border-color: #eee transparent;
-		display: block;
-		width: 0;
-		z-index: 1;
-		top: -6px;
-		left: 17px;
+		position: relative;
+		background: rgba(100,0,0, 0.0);
+		width:105%;
+		color: #fff;
+		top:0px;
+		left:0px;
+		padding-bottom: 1900px;
 		}
-		
-		.bubble:before 
-		{
-		content: '';
-		position: absolute;
-		border-style: solid;
-		border-width: 0 6px 7px;
-		border-color: #363139 transparent;
-		display: block;
-		width: 0;
-		z-index: 0;
-		top: -8px;
-		left: 17px;
-		}
+
+
 		
 		.alignleft {
 		  float: left;
-		  width:5%;
+		  width:10%;
 		  text-align:left;
 		  margin: 0px;
 		  padding: 0px;
+		  font-size:6vh;
 		}
 		.aligncenter {
 		  float: left;
-		  width:90%;
+		  width:80%;
 		  text-align:center;
 		  margin: 0px;
 		  padding: 0px;
 		}
 		.alignright {
 		 float: left;
-		 width:5%;
+		 width:10%;
 		 text-align:right;
 		 margin: 0px;
 		 padding: 0px;
+		 font-size:6vh ;
 		}​
-		
+	
+
+
+
+
+
+
 		
 	</style>
 
@@ -231,66 +219,77 @@
 		
 
 		<!-- UI Block -->
-		<div style="z-index:100; position:absolute; background-color: rgba(0,0,0,0);  pointer-events: none; position:fixed; height:100%; top:0px; width:96%; left:0px; font-size:2vh;">
+		<div style="z-index:100; position:absolute;  pointer-events: none; position:fixed; height:100%; top:0px; width:96%; left:0px; font-size:2vh;">
+		
+
+<div id="data2" style="display:none;" ></div>
+<div id="data" style="display:none;" ></div>
+
+			
 			
 			<div id="galleryUI" style=" display:none; text-align: center; ">
 				<div style="  position:absolute; pointer-events: auto; width:100%; padding:0px;">			
-					<div id="progress" style="text-align:center; font-size: 10vw;">	
 
-					</div>
 				</div>	
 	
-				<div  class="bubble" style="position:absolute; pointer-events: auto; bottom:10px; margin-left:10%; margin-right: 10% ; ">
+
+					
+				<div  class="bubble" style="position:absolute; pointer-events: auto;">
+
+					<div id="progress" style="text-align:center; margin-top: 0px; background-color: rgb(0,0,0, 0.5); ">	
+					</div>
 					  
-					<div style="font-size:4vw ; padding:15px;">
+					<div style="font-size:3vh ; padding:15px;">
 						
 						<p class="alignleft">
-						
-							<a id="laster" style="vertical-align: middle; display: none;"  href="javascript:last();">
-								<i class="fa fa-chevron-left" aria-hidden="true"></i>
-							</a>
 							
+							<a id="laster" style="vertical-align: top; pointer-events: none; opacity: 0 ;"  href="javascript:last();">
+								<i class="far fa-arrow-alt-circle-left"></i>
+							</a>
 						</p>
 							
 						<p id="title" class="aligncenter" style="vertical-align: middle;" >c AR toons by Jack Ohman<span>
 						
+						
 						<p class="alignright">
-							<a id="nexter" style="vertical-align: middle;"  href="javascript:next();">
-								<i class="fa fa-chevron-right" aria-hidden="true"></i>
+							<a id="nexter" style="vertical-align: top; pointer-events: auto; opacity: 1 ;"  href="javascript:next();">
+								<i class="far fa-arrow-alt-circle-right"></i>
 							</a>
 						</p>
 					</div>
+					
 				</div>
 			</div>	
 
 
 			<div style="  position: relative; top: 50%; margin:2%; transform: translateY(-50%);">
 				
-				<div id="loader" style="width:100%; font-size:5vw; text-align:center; display: inline-block;">
-					<i class="fa fa-spinner fa-spin" aria-hidden="true"></i><BR> Loading
+				<div id="loader" style="width:100%; font-size:5vh; text-align:center; display: inline-block;">
+					<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i><BR> Loading
 				</div>
 
-				<a id="playbutton" style="font-size:30vw; display:none;  top:15%; left:33%; position:absolute; pointer-events: auto;" href="javascript:document.getElementById('fixed-frame').play();document.getElementById('playbutton').style('display:none;');">
-					<i class="fa fa-play-circle" aria-hidden="true"></i>
+				<a id="playbutton" style="width:100%; font-size:20vh; text-align:center; display: inline-block; pointer-events: auto" href="javascript:document.getElementById('fixed-frame').play();document.getElementById('playbutton').style('display:none;');">
+					<i class="far fa-play-circle"></i>
 				</a>	
 			</div>
 		</div>
 	  
 	<a-scene id="scene" embedded arjs='sourceType: webcam; debugUIEnabled: false;' vr-mode-ui="enabled: false">
 		<a-assets id="assets" timeout="100000">
-			<video id="fixed-frame" autoplay loop src="jack_assets/ohmandoc.mp4"></video>
-<!--			
-			<a-asset-item id="exoFont" src="https://cdn.glitch.com/c719c986-c0c5-48b8-967c-3cd8b8aa17f3%2Fexo2Black.typeface.json?1490305922150"></a-asset-item>
+			
+			<video id="fixed-frame" autoplay loop src="jack_assets/ohmandoc.mp4"></video>	
+<!--					
+<a-asset-item id="exoFont" src="https://cdn.glitch.com/c719c986-c0c5-48b8-967c-3cd8b8aa17f3%2Fexo2Black.typeface.json?1490305922150"></a-asset-item>
 -->			
 				
 			<img id="sky" src="env.jpg" crossorigin="anonymous" />
-			<!-- <img id="sky-dark" src="env-dark.jpg" crossorigin="anonymous" /> -->
 		    <a-asset-item id="Theater-obj" src="jack_assets/Theater.obj"></a-asset-item>
 			<a-asset-item id="Theater-mtl" src="jack_assets/Theater.mtl"></a-asset-item>
+			<img id="stage" src="stage.png">
 		</a-assets>
 			  	
 		<a-marker play-on-scan id="hiro" preset='hiro'>
-			<a-entity id="hiroStuff" scale="0 0 0">
+			<a-entity id="hiroStuff" scale="0 0 0" >
 				
 
 <!--				
@@ -303,53 +302,78 @@
 				<a-animation id="animate_in_hiro" attribute="scale" begin="animate-in-hiro" easing="ease" fill="forwards" from="0 0 0" to="1 1 1" dur="1500"></a-animation>
 				<a-sphere id="center" material="side: back; color: #ffffff; transparent: true; opacity: 0.75"  visible="true" radius="8">
 				</a-sphere>
-				<a-entity id="stageOne" >
-								
-					<a-cylinder height=".04" radius="0.8"  shadow="receive: true" material="color:white; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
-					<a-cylinder height=".04" radius="0.9" position="0 -0.05 0" material="color:#eeeeee; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
-					<a-cylinder height=".04" radius="1" position="0 -0.1 0" material="color:#cccccc; metalness:1; roughness: 0.5; sphericalEnvMap: #sky;"></a-cylinder>
-				</a-entity>
-			</a-entity>
-		</a-marker>
+					<a-entity id="stageOne" >
+						
+						<a-box scale="3 .05 2.4" position="0 0.0 0" rotation="0 0 0" src="stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>		
+						<a-box scale="1.5 .05 1.5" position="0 .05 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#dddddd" ></a-box>
+						<a-box scale="1.4 .05 1.4" position="0 .1 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#eeeeee" ></a-box>
+						<a-box scale="1.3 .05 1.3" position="0 .15 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>
 
-
-<!-- Kanji for Android				
-		<a-marker play-on-scan id="kanji" preset='kanji'>
+							</a-entity>
 			
-			<a-entity id="fullJackScene" scale="1.3 1.3 1.3" rotate="0 180 0" >
-				<a-entity position ="0 0 0.475"> 
-					<a-entity rgbd-video="depthFocalLengthX:364.801;depthFocalLengthY:364.801;depthPrincipalPointX:257.002;depthPrincipalPointY:207.339;farClip:1204;nearClip:434" position="1.506 1 0.368" scale="1 1 0.5" rotation="0 11.344564343590301 0"></a-entity>	
-					
-					<a-entity position="-0.099 0.762 0.11723128954908402">
-						<a-entity gltf-model="jack_assets/jacksigbig.gltf" scale="0.3172493692677065 0.3172493692677065 0.3172493692677065" rotation="3.134519705135785 -156.44141568818014 -7.147891789649802" material="flatShading:true">
-							<a-animation attribute="scale" dur="2000" from="0.442 0.442 0.442" to=" .15 .15 .15" direction="alternate-reverse" easing="ease-in-out-circ" repeat="indefinite"></a-animation>
-						</a-entity>
-				    </a-entity>
-	
-					<a-entity id="chair">
-					    <a-entity position="-0.09163589951402693 0.259 -0.458" scale="0.137 0.029 0.31847061810817034" id="Chair" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
-						<a-entity position="-0.08612916203814716 0.538 -0.5887897935817903" rotation="-85.485 180.023 180.023" scale="0.123 0.022 0.2542389053324183" id="Chair-2" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
-						<a-entity position="0.033 0.131 -0.366" scale="0.012 0.271592006465578 0.011" id="chair leg" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
-						<a-entity position="0.033 0.131 -0.557" scale="0.012 0.272 0.011" id="chair leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
-						<a-entity position="-0.083 0.390525926584711 -0.6075130003805376" rotation="-8.308 0 0" scale="0.03351838044091261 0.332 0.007" id="leg-4" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
-						<a-entity position="-0.222 0.133 -0.557" scale="0.012 0.272 0.011" id="leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
-						<a-entity position="-0.22195693540447045 0.131 -0.366" scale="0.012 0.272 0.011" id="chair leg-2" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
-					</a-entity>			                    
-					    
-				<a-entity position="0.014955915884175757 0.1834162714932471 -0.375" scale="0.7404458572014967 0.7404458572014967 0.7404458572014967">
-					<a-entity gltf-model="jack_assets/scene.gltf" scale="0.0003 0.0003 0.0003" position="0 0.9 0"></a-entity>
-				</a-entity>
+				
 			</a-entity>
-			<a-box scale="1.3 .05 1.3" position="-.1 -0.05 0" rotation="0 45 0" material="metalness:1; roughness: 0.5; sphericalEnvMap: #sky; color:#4e6331" ></a-box>
-			<a-box scale="1.3 .05 1.3" position="-.1 -0.1 0" rotation="0 45 0" material="metalness:1; roughness: 0.5; sphericalEnvMap: #sky; color:#c4a15d" ></a-box>
-
 		</a-marker>
- -->		
+
+
+<!-- Kanji for Android			
+		<a-marker play-on-scan id="kanji" preset='kanji'>
+			<a-entity>	
+								<a-sphere id="center" material="side: back; color: #ffffff; transparent: true; opacity: 0.75"  visible="true" radius="16">
+				</a-sphere>
+				<a-entity id="fullJackScene" rotate="0 90 0" position=" -0.4 .2 0 " >
+					<a-animation id="animate_in_kanji-1" attribute="scale" begin="animate-in-hiro" easing="ease-out-back" fill="forwards" from="0 0 0" to="3 3 3" dur="1500"></a-animation>
+	
+					<a-entity position ="0 0 0.475"> 
+						<a-entity rgbd-video="depthFocalLengthX:364.801;depthFocalLengthY:364.801;depthPrincipalPointX:257.002;depthPrincipalPointY:207.339;farClip:1204;nearClip:434" position="1.506 1 0.368" scale="1 1 0.5" rotation="0 11.344564343590301 0"></a-entity>	
+						
+						<a-entity position="-0.099 0.762 0.11723128954908402">
+							<a-entity gltf-model="jack_assets/jacksigbig.gltf" scale="0.3172493692677065 0.3172493692677065 0.3172493692677065" rotation="3.134519705135785 -156.44141568818014 -7.147891789649802" material="flatShading:true">
+								<a-animation attribute="scale" dur="2000" from="0.442 0.442 0.442" to=" .15 .15 .15" direction="alternate-reverse" easing="ease-in-out-circ" repeat="indefinite"></a-animation>
+							</a-entity>
+					    </a-entity>
+		
+						<a-entity id="chair">
+						    <a-entity position="-0.09163589951402693 0.259 -0.458" scale="0.137 0.029 0.31847061810817034" id="Chair" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
+							<a-entity position="-0.08612916203814716 0.538 -0.5887897935817903" rotation="-85.485 180.023 180.023" scale="0.123 0.022 0.2542389053324183" id="Chair-2" geometry="primitive:torus" material="shader:flat;color:#001845"></a-entity>
+							<a-entity position="0.033 0.131 -0.366" scale="0.012 0.271592006465578 0.011" id="chair leg" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+							<a-entity position="0.033 0.131 -0.557" scale="0.012 0.272 0.011" id="chair leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+							<a-entity position="-0.083 0.390525926584711 -0.6075130003805376" rotation="-8.308 0 0" scale="0.03351838044091261 0.332 0.007" id="leg-4" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+							<a-entity position="-0.222 0.133 -0.557" scale="0.012 0.272 0.011" id="leg-3" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+							<a-entity position="-0.22195693540447045 0.131 -0.366" scale="0.012 0.272 0.011" id="chair leg-2" geometry="segmentsHeight:1;primitive:cylinder" material="shader:flat;color:#4c4c4c"></a-entity>
+						</a-entity>			                    
+						    
+					<a-entity position="0.014955915884175757 0.1834162714932471 -0.375" scale="0.7404458572014967 0.7404458572014967 0.7404458572014967">
+						<a-entity gltf-model="jack_assets/scene.gltf" scale="0.0003 0.0003 0.0003" position="0 0.9 0"></a-entity>
+					</a-entity>
+				</a-entity>
+				<a-animation id="animate_in_kanji-2" attribute="rotation" begin="animate-in-hiro" easing="ease-out-cubic" fill="forwards" from="0 9 0" to="0 180 0" dur="2000"></a-animation>
+					
+				
+					<a-entity scale=".3 .3 .3" position="-0.1 -0.05 0">
+					<a-box scale="1.5 .05 1.5" position="0 .05 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#dddddd" ></a-box>
+						<a-box scale="1.4 .05 1.4" position="0 .1 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#eeeeee" ></a-box>
+						<a-box scale="1.3 .05 1.3" position="0 .15 0" rotation="0 0 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>	
+			</a-entity>
+						
+			</a-entity>
+			
+					<a-entity id="stageOne" >
+						
+						<a-box scale="3 .05 2.4" position="0 0.0 0" rotation="0 180 0" src="stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>		
+
+
+							</a-entity>
+			
+		</a-marker>
+
+-->		
 
 		<a-marker play-on-scan id="kanji" preset='kanji'>
-			<a-box scale="2.8 .05 2.4" position="0 0.05 0" rotation="0 0 0" material="metalness:1; roughness: 0.5; sphericalEnvMap: #sky; color:#003369" ><a-animation id="animate_in_kanji-1" attribute="scale" begin="animate-in-hiro" easing="ease-out-back" fill="forwards" from="0 0 0" to="2.8 .05 2.6" dur="1500"></a-animation></a-box>
-			<a-box scale="5 8 5" position="0 -4 0" rotation="0 0 0" src="blank.gif" ></a-box>
-			<a-entity id="kanji_stuff">	
+									<a-box scale="3 .05 2.4" position="0 0. 0" rotation="0 0 0" src="stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" > <a-animation id="animate_in_kanji-1" attribute="scale" begin="animate-in-hiro" easing="ease-out-back" fill="forwards" from="0 0 0" to="2.8 .05 2.6" dur="1500"></a-animation></a-box>
+				
+			<a-box scale="5 8 5" position="0 -4.1 0" rotation="0 0 0" src="blank.gif" ></a-box>
+			<a-entity id="kanji_stuff" rotation="0 180 0" scale="0.75 0.75 0.75" > 	
 				<a-animation id="animate_in_kanji-2" attribute="position" begin="animate-in-hiro" easing="ease" fill="forwards" from="0 -3 0" to="0 0.05 0" dur="2500"></a-animation>
 				
 				<a-video src="#fixed-frame" width="16" height="9" position="0 1.5 .65" rotation="0 180 0" scale=".13 .13 .13" ></a-video>
@@ -367,6 +391,7 @@
     <script>
 	    
 	   var kanji;
+	   var begun=false;
 	    
 	   function PopUpShare(){
 		    
@@ -380,18 +405,21 @@
 	    function bookends(){
 		    
 		    if(TargetModel+1 == loopLength){
-			document.getElementById("nexter").style.display = "none";
+			document.getElementById("nexter").style.opacity = "0";
+			document.getElementById("nexter").style.pointerEvents = "none";
 	       	}else if(TargetModel == 0){
-			document.getElementById("laster").style.display = "none";
+			document.getElementById("laster").style.opacity = "0";
+			document.getElementById("laster").style.pointerEvents = "none";
 		   }else{
-			document.getElementById("nexter").style.display = "inline-block";
-			document.getElementById("laster").style.display = "inline-block";		     
-		    
+			document.getElementById("nexter").style.opacity = "1";
+			document.getElementById("laster").style.opacity = "1";		     
+		    document.getElementById("nexter").style.pointerEvents = "auto";
+		    document.getElementById("laster").style.pointerEvents = "auto";
 	    }
 	    }
 	    
 	    function transitionModels() {
-		    //console.log('take out' + CurrentModel +'| bring in' + TargetModel);
+		    console.log('take out' + CurrentModel +'| bring in' + TargetModel);
 		    //document.querySelector('#nowPlaying').innerHTML = CurrentModel;
 			document.querySelector('#model'+CurrentModel).emit('transition-out-scale');
 			document.querySelector('#model'+CurrentModel).emit('transition-out-pos');
@@ -420,10 +448,10 @@
 		   	
 		    TargetModel = CurrentModel+1;
 	       
-	      // console.log('Nexting to '+ TargetModel );
+	     //  console.log('Nexting to '+ TargetModel );
 
 
-	       //	console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+	     //  	console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
 		   // document.querySelector('#nowPlaying').innerHTML = TargetModel;
 		    createAEnity(TargetModel,json);
 		    document.getElementById("mtl"+TargetModel).addEventListener("loaded", transitionModels());
@@ -449,8 +477,8 @@
 	        
 		    TargetModel = CurrentModel-1;		     
 
-		  //  console.log('Lasting to '+ TargetModel );
-		  //  console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
+		//    console.log('Lasting to '+ TargetModel );
+		//    console.log('out with ' + CurrentModel + 'in with ' + TargetModel );
 		    
 			document.getElementById("indicator"+TargetModel).classList.add("active");
 			document.getElementById("indicator"+TargetModel).classList.remove("inactive");
@@ -481,8 +509,8 @@
 
 		   
 	   function createAModel(TargetModel){
-		 //  console.log( pos, rot, scale );
-		 //  console.log('creating model' +TargetModel);
+		//   console.log( pos, rot, scale );
+		//   console.log('creating model' +TargetModel);
 		   
 		   document.getElementById('title').innerHTML=title;
 		   
@@ -542,7 +570,7 @@
 	    
 	    function createAEnity(TargetModel,json){
 		    
-		 //   console.log('Create Entity' +TargetModel);
+		//    console.log('Create Entity' +TargetModel);
 			 
 		 	var obj = 'jack_assets/' + json[TargetModel]['fileName'] + '.obj';
 		 	var mtl = 'jack_assets/' + json[TargetModel]['mtl'] + '.mtl';
@@ -588,7 +616,7 @@
 		//	console.log('Initial Scene loaded');
 			json = {};
 		    $.ajax({
-		        url: "jack.json",
+		        url: "jack1.json?123=213",
 		        async: true,
 		        dataType: 'json',
 		        success: function(data) {
@@ -655,7 +683,7 @@
 
 
 var hiroLoop = 0;
-var kanjiLoop = 0;	    
+var kanjiloop= 0;
 
 			AFRAME.registerComponent('play-on-scan', {
 			  init: function () {
@@ -667,6 +695,7 @@ var kanjiLoop = 0;
 					    document.getElementById("galleryUI").style.display = "inline-block";
 					    hiroLoop = 1;
 					    document.getElementById('hiroStuff').emit('animate-in-hiro');
+					    begun = true;
 		//			    console.log('emitted');
 				    }
 				    
@@ -693,9 +722,9 @@ var kanjiLoop = 0;
 					    document.getElementById("galleryUI").style.display = "none";
 					     hiroLoop = 0;
 				    }
-				    
-				    if(el.id == 'kanji'){
 
+				    if(el.id == 'kanji'){
+					   // document.getElementById("galleryUI").style.display = "none";
 					     kanjiLoop = 0;
 				    }
 				    
@@ -715,7 +744,7 @@ var kanjiLoop = 0;
 
 			AFRAME.registerComponent('do-something-once-loaded', {
 			  init: function () { 
-				  // console.log('Asset says it is loaded'); 
+				  // console.log('Asset says it is loaded');
 			  }
 			});
 		
@@ -730,6 +759,54 @@ var kanjiLoop = 0;
   ga('send', 'pageview');
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.7/hammer.min.js'></script>
+
+    <script >
+    var sliderEl = document.querySelector( '.drag' );
+    var width = window.innerWidth;
+	var data = document.querySelector( '#data' );
+	var userRot = 0;
+	var rotMem = 0; 
+	var newRow = 0;
+	var sliderManager = new Hammer.Manager( sliderEl );
+	console.log("#model"+CurrentModel);
+
+
+	sliderManager.add( new Hammer.Pan({ threshold: 0, pointers: 0 }) );
+	sliderManager.on( 'pan', function( e ) {
+
+    userRot = Math.round(((e.deltaX) / width) * 180);
+    newRot = userRot + rotMem;
+
+    data2.innerHTML = userRot;    
+    data.innerHTML = newRot;
+
+    
+    if(begun == true){
+	    var hiroStuff = document.querySelector('#model'+CurrentModel);
+	    hiroStuff.setAttribute('rotation', '0 '+ newRot + ' 0' );
+	}
+    
+  if( e.isFinal ) {
+	rotMem =  Math.round(((e.deltaX ) / width) * 180) + rotMem;
+
+  }
+});
+    </script>
+
+
+
 
 
   </body>
