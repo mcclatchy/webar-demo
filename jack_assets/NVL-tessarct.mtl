@@ -20,7 +20,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 3
-map_Kd /Users/bconnors/Downloads/Gradient-1.png
+map_Kd Gradient-1.png
 
 newmtl Gradient_2
 Ns 200.000000
@@ -31,7 +31,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 3
-map_Kd /Users/bconnors/Downloads/Gradient-2.png
+map_Kd Gradient-2.png
 
 newmtl Gradient_3
 Ns 200.000000
@@ -42,7 +42,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 3
-map_Kd /Users/bconnors/Downloads/Gradient-3.png
+map_Kd Gradient-3.png
 
 newmtl phong1SG
 Ns 17.647059
