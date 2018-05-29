@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<script src="js/aframe.min.js"></script>
+<!-- include aframe-ar.js -->
+<script src="js/aframe-ar.js?a"></script>
+<script src='//cdn.rawgit.com/donmccurdy/aframe-extras/v2.6.1/dist/aframe-extras.js'></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+
+	<a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+
+
+
+      <a-assets>
+	  <a-asset-item id="nvl-ibj" src="jack_assets/NVL-tessarct.obj"></a-asset-item>
+	  <a-asset-item id="nvl-mtl" src="jack_assets/NVL-tessarct.mtl"></a-asset-item>
+	  <img id="stage" src="../stage.png">
+      </a-assets>
+
+
+
+		<a-marker type='pattern' url='pattern-files/nvl.patt' >
+			
+			<a-entity obj-model="obj: #nvl-obj; mtl: #nvl-mtl"></a-entity>
+
+			<a-entity id="stageOne" >
+
+				<a-box scale="3 .05 2.4" position="0 0.0 0" rotation="0 90 0" src="../stage.png" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>		
+
+				<a-box scale="1.5 .05 1.5" position="0 .05 0" rotation="0 90 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#dddddd" ></a-box>
+
+				<a-box scale="1.4 .05 1.4" position="0 .1 0" rotation="0 90 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#eeeeee" ></a-box>
+
+				<a-box scale="1.3 .05 1.3" position="0 .15 0" rotation="0 90 0" material="metalness:.5; roughness: 0.9; sphericalEnvMap: #sky; color:#ffffff" ></a-box>
+
+			</a-entity>
+
+		</a-marker>
+
+
+		<a-entity camera></a-entity>
+
+	</a-scene>
+</body>
+</html>
