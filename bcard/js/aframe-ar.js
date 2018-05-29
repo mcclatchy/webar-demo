@@ -5204,7 +5204,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 
 // ARjs.Context.baseURL = '../'
 // default to github page
-ARjs.Context.baseURL = 'https://sandbox.video/ar-island/taken/'
+ARjs.Context.baseURL = 'https://mcclatchy.github.io/webar-demo/bcard/taken/'
 ARjs.Context.REVISION = '1.5.1'
 
 
