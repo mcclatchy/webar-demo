@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<!-- WORKING CUSTOM AR MARKER SCRIPTS -->
+
+		<!-- include aframe.js -->
+		<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+		
+		
+		<!-- include aframe-ar.js -->
+		<script src="https://sandbox.video/spec/1/js/aframe-ar.js"></script>
+		
+		<!-- include don mccurdy aframe-extras -->
+		<script src="https://sandbox.video/spec/1/js/aframe-extras.js"></script>
+		
+		<!-- include watch.js to watch for appearing and disappearing markers -->
+		<script src="https://sandbox.video/spec/1/js/watch.min.js"></script>
+
+		<!-- include experimental particle system -->
+		<script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+<!-- include Jquery -->
+		<script
+		  src="https://code.jquery.com/jquery-3.3.1.min.js"
+		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		  crossorigin="anonymous"></script>
+
+<!-- END WORKING CUSTOM AR MARKER SCRIPTS -->		
+	
+	
+
+	<script src="js/env-map.js"></script>	
+
+
+<script>
+
+AFRAME.registerComponent('cloak', {
+  schema: { type: 'int', default: 0 },
+
+  update: function () {
+    var object3D = this.el.object3DMap.mesh;
+	object3D.material.colorWrite = false; 
+  }
+});
+
+</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+</div>
+
+
+
+
+	<a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; debugUIEnabled: false;' vr-mode-ui="enabled: false">
+		<!-- SCENE CONSTANTS LIKE LIGHTING -->
+
+<a-entity light="intensity:3;angle:60.540000000000006" position="-0.2612890122648104 1.5461234405923374 3.955361831865604"></a-entity>
+	<a-entity light="intensity:3;angle:60.540000000000006" position="5.787254405230689 -0.8983049538967702 -2.1779214010397667"></a-entity>
+
+
+		<!-- NVL MARKER -->
+		<a-marker play-on-scan  id="marker" type='pattern' url='pattern-files/nvl.patt' >
+			
+
+			
+		</a-marker>
+
+
+		<!-- add a simple camera -->
+		<a-entity camera></a-entity>
+			
+			
+	</a-scene>
+
+
+<script>
+
+function loadDefault(){
+	        $.ajax({
+            url : "nvl-logo-scene.txt",
+            dataType: "text",
+            success : function (data) {
+                $("#marker").append(data);
+                console.log(data);
+            }
+        });
+}	
+	
+	
+function getQueryVariable(variable)
+	{
+	       var query = window.location.search.substring(1);
+	       var vars = query.split("&");
+	       for (var i=0;i<vars.length;i++) {
+	               var pair = vars[i].split("=");
+	               if(pair[0] == variable){return pair[1];}
+	       }
+	       return(false);
+	}
+
+if (getQueryVariable('scene') !== false) {
+	console.log('deeplinked');
+  var scene = getQueryVariable('scene');
+  
+          $.ajax({
+            url : scene +".txt",
+            dataType: "text",
+            success : function (data) {
+                $("#marker").append(data);
+                console.log(data);
+            },
+            error: function (data) {
+        
+        loadDefault();
+        
+    	}
+        });
+  
+  
+}else{
+	console.log('regular');	
+	loadDefault();
+	
+
+
+} 
+</script	
+		
+</body>
+</html>

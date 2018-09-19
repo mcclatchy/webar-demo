@@ -1,0 +1,4 @@
+  <a-gltf-model scale="1.5 1.5 1.5" rotation="0 180 0" position="0 .75 0" src="../../aframe/Baked_Test.glb" cube-env-map="path: assets/cubemap/; extension: jpg;">
+</a-gltf-model>
+
+<a-light light="color: #ffffff; type: ambient; intensity: 1"></a-light>

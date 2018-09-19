@@ -1,0 +1,124 @@
+		
+						
+			<a-entity id="place" position="-3.2 0.2 0">
+			<a-entity id="center">
+				
+				<a-animation 
+				attribute="position" 
+				repeat="indefinite" 
+				dur="2000" 
+				delay="2000" 
+				easing="ease-in-out" 
+				direction="alternate-reverse"
+				to="0 0 0" 
+				from="3 0 0">
+				</a-animation>
+
+				<a-animation 
+				attribute="scale" 
+				repeat="indefinite" 
+				dur="2000" 
+				delay="2000" 
+				easing="ease-in-out" 
+				direction="alternate-reverse"
+				to="1 1 1" 
+				from=".5 .5 .5">
+				</a-animation>
+
+				<!-- NVL TESSERACT LOGO -->
+				<a-entity id="logo" position="3 -0.5 0">
+					
+					<a-entity id="yrock">
+						<a-animation 
+						attribute="rotation" 
+						repeat="indefinite" 
+						dur="2000" 
+						easing="ease-in-out" 
+						direction="alternate-reverse" 
+						to="0 -15 0" 
+						from="0 0 0">
+						</a-animation>
+					<a-gltf-model 
+					id="GLB-of-Logo" 
+					position="0 0.5 0"
+					src="assets/tess-logo.glb"
+					cube-env-map="path:assets/cubemap/" 
+					gltf-model="assets/tess-logo.glb" 
+					>
+							
+						<a-animation 
+						attribute="rotation" 
+						repeat="indefinite" 
+						dur="2000" 
+						delay="2000" 
+						easing="ease-in-out" 
+						direction="alternate-reverse" 
+						to="0 0 0" 
+						from="0 -360 0">
+						</a-animation>
+
+						
+					</a-gltf-model>
+					</a-entity>
+						
+					<a-animation 
+					attribute="position" 
+					repeat="indefinite" 
+					dur="2000" 
+					delay="2000" 
+					easing="ease-in-out"
+					direction="alternate-reverse" 							
+					to="3 -0.5 0" 
+					from="-3.3 -0.5 0">
+					</a-animation>
+				</a-entity>
+
+
+			
+				<!-- TEXT MASK -->
+				<a-entity 
+				id="mask" 
+				position="-2.73 0 0" 
+				scale="68 1.2 1">
+					<a-box
+					id="masking-box" 
+					scale="0.1 1.2 1" 
+					position="0.05 0.5 -.06" 
+					material="color:#ff5555" 
+					geometry=""
+					  cloak="1"
+					>
+					</a-box>
+					
+					<a-animation 
+					attribute="scale" 
+					repeat="indefinite" 
+					dur="2000" 
+					delay="2000" 
+					easing="ease-in-out" 
+					direction="alternate-reverse" 
+					from="0 1.2 1" 
+					to="68 1.2 1">
+					</a-animation>
+					
+				</a-entity>		
+		
+		
+						<!-- "NEW VENTURES LAB" TITLE -->
+				<a-entity id="text">
+					<a-gltf-model 
+					id="GLB-of-Title" 
+					src="assets/tess-text.glb" 
+					cube-env-map="path:assets/cubemap/" 
+					gltf-model="assets/tess-text.glb"
+					>
+					</a-gltf-model>
+				</a-entity>
+		
+			</a-entity>
+			</a-entity>
+
+	  <a-sound src="src: url(assets/8-sec-full.mp3)" autoplay="true" position="0 0 0" loop="true"></a-sound>
+
+
+
