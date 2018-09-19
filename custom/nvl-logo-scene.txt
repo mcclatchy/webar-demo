@@ -117,8 +117,3 @@
 		
 			</a-entity>
 			</a-entity>
-
-	  <a-sound src="src: url(assets/8-sec-full.mp3)" autoplay="true" position="0 0 0" loop="true"></a-sound>
-
-
-
