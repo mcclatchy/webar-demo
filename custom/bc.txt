@@ -1,0 +1,60 @@
+			
+			<!-- WITHIN NVL MARKER -->
+			
+
+			<a-entity id="mask"> 			
+				<a-box id="small-north-mask" scale="1 0.01 15" position="0 0 -8.0"  src="assets/blank.gif" geometry="">
+				</a-box>
+				
+				<a-box id="small-south-mask" scale="1 0.01 15" position="0 0 8.0" src="assets/blank.gif" geometry="">
+				</a-box>
+				
+				<a-box id="large-west-mask" scale="30 0.01 30" position="-15.5 0 0" src="assets/blank.gif" geometry="">
+				</a-box>
+				
+				<a-box id="large-east-mask" scale="30 0.01 30" position="15.5 0 0" src="assets/blank.gif" geometry="">
+				</a-box>
+			</a-entity>
+				
+				
+			<a-entity id="well"> 		
+				<a-box id="north-well-wall" scale="1 10 .01" position="0 -5 -0.5" rotation="0 0 0" material="color:#333333" geometry="">
+				</a-box>
+				
+				<a-box id="south-well-wall" scale="1 10 .01" position="0 -5 0.5" rotation="0 0 0" material="color:#333333" geometry="">
+				</a-box>
+				
+				<a-box id="west-well-wall" scale=".01 10 1" position="-0.5 -5 0" rotation="0 0 0" material="color:#333333" geometry="">
+				</a-box>
+				
+				<a-box id="east-well-wall" scale=".01 10 1" position="0.5 -5 0" rotation="0 0 0" material="color:#333333" geometry="">
+				</a-box>
+				
+				<a-box id="well-floor" scale="1 0.01 1" position="0 -10 0" material="color:#000000" geometry="">
+				</a-box>
+			</a-entity>	
+
+			<a-entity id="north-door-hinge" position="0 0 -0.5" >
+				<a-sphere color="white" radius="0.02"></a-sphere> 
+				<a-animation attribution="rotation" dur='3000' delay="1000" from="0 0 0 " to="-135 0 0" direction='alternate-reverse' easing='ease-in-out-circ' repeat='indefinite' ></a-animation>
+				<a-box id="north-trap-door" scale="1 0.01 -0.5" position="0 0 0.25" src="assets/custom-marker-north-f.jpg" geometry="">
+				</a-box>		
+			</a-entity>
+			
+			<a-entity id="south-door-hinge" position="0 0 0.5" rotation="0 0 0" >
+				<a-sphere color="white" radius="0.02"></a-sphere> 
+				<a-animation attribution="rotation" dur='3000' delay="1000" from="0 0 0 " to="135 0 0" direction='alternate-reverse' easing='ease-in-out-circ' repeat='indefinite' ></a-animation>
+				<a-box id="north-trap-door" scale="1 0.01 -0.5" position="0 0 -0.25" src="assets/custom-marker-south-f.jpg" geometry="">
+				</a-box>		
+			</a-entity>
+
+	<a-gltf-model id="ben" scale=".08 .08 .08" position="0 -.5 0" src="assets/ben.glb" cube-env-map="path:assets/cubemap/" gltf-model="assets/ben-head.glb">
+
+			
+		<a-animation attribute="position" dur='3000' delay="1000" from="0 -2.3 0 " to="0 1.9 0" easing='ease-in-out-cubic' direction='alternate-reverse' repeat='indefinite' ></a-animation>
+
+		<a-animation attribute="rotation" dur='2000' from="0 0 0 " to="0 360 0" easing="linear"  repeat='indefinite' ></a-animation>		
+
+		</a-gltf-model>	
+
+
