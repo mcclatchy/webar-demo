@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<!-- WORKING CUSTOM AR MARKER SCRIPTS -->
+
+		<!-- include aframe.js -->
+		<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+		
+		
+		<!-- include aframe-ar.js -->
+		<script src="https://sandbox.video/spec/1/js/aframe-ar.js"></script>
+		
+		<!-- include don mccurdy aframe-extras -->
+		<script src="https://sandbox.video/spec/1/js/aframe-extras.js"></script>
+		
+		<!-- include watch.js to watch for appearing and disappearing markers -->
+		<script src="https://sandbox.video/spec/1/js/watch.min.js"></script>
+
+		<!-- include experimental particle system -->
+
+
+<!-- END WORKING CUSTOM AR MARKER SCRIPTS -->		
+	
+	
+		<script src="https://sandbox.video/spec/1/js/env-map.js"></script>	
+		
+		
+		<script src="https://rawgit.com/protyze/aframe-curve-component/master/dist/aframe-curve-component.min.js"></script>
+  <script src="https://rawgit.com/protyze/aframe-alongpath-component/master/dist/aframe-alongpath-component.min.js"></script>
+  		<script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;             height: 100%;
+            margin: 0;'><div id="load-message" style='position: fixed; top: 0px; width:100%;            min-height: 100%;  text-align: center; color:#000; z-index: 20; background-color:#fff;'>
+	            <center>
+	            LOADING<BR>
+	            <span id="videoStatement">Please Allow Access to your Camera</span>
+	           </center>
+	            
+</div>
+
+
+
+
+	<script>
+
+
+			var horsePos = 0;
+			var zebPos = 0;
+			
+
+			AFRAME.registerComponent('play-on-scan', {
+			  init: function () {
+				  
+				  
+			    var el = this.el;
+			    
+			  
+		//////////////////////////////////////////////////////////////////////////////
+		//		BEN'S INTERACTIVITY SCRIPT
+		//////////////////////////////////////////////////////////////////////////////		
+
+		
+watch(this.el.object3D, "visible", function(){
+			if(this.el.object3D.visible) { 
+
+			if (this.el.id == 'kanji' ){
+			horsePos += -0.2;	
+			//document.querySelector('#horse').setAttribute('position', '0 0 '+ horsePos );
+			
+			console.log(horsePos);
+			}
+			
+
+			if (this.el.id == 'hiro' ){
+			zebPos += -0.2;	
+			//document.querySelector('#zebra').setAttribute('position', '0 0 '+ zebPos );
+			
+			console.log(zebPos);
+			}
+			
+
+			console.log( this.el.id + ": found");
+				idle.components.sound.playSound();
+	AFRAME.utils.entity.setComponentProperty(mover, "alongpath.curve", "#track1");
+			}else{ 
+				idle.components.sound.stopSound();
+	AFRAME.utils.entity.setComponentProperty(mover, "alongpath.curve", "#loadingtrack");
+			console.log( this.el.id + ": gone");
+			//	document.querySelector('#br-container').emit('reset');
+			   	idle.components.sound.stopSound();
+			   	throttle.components.sound.stopSound();
+			}
+});
+			   
+
+			  }
+			});
+
+
+	</script>
+
+
+	<a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; debugUIEnabled: false;' vr-mode-ui="enabled: false">
+		<!-- SCENE CONSTANTS LIKE LIGHTING -->
+		
+    <a-assets>
+        <a-mixin id="eye-trigger" geometry="primitive:sphere; radius:0.1" visible="false" ></a-mixin>
+	    <a-asset-item id="br-glb" src="assets/bigred/bigred_decimated_wheels_flipped.glb"></a-asset-item>
+    </a-assets>
+		
+
+
+		<!-- NVL MARKER -->
+		<a-marker play-on-scan  id="NVL" type='pattern' url='https://sandbox.video/spec/1/pattern-files/nvl.patt' >
+			
+			<!-- WITHIN NVL MARKER -->
+			
+	
+
+	<a-entity light="intensity:1.6;angle:60.540000000000006" position="-0.2612890122648104 1.5461234405923374 3.955361831865604"></a-entity>
+	<a-entity light="intensity:.8;angle:60.54;type:ambient" position="-0.261 1.546 3.955"></a-entity>
+	
+	
+
+	<a-curve id="loadingtrack">
+<a-curve-point position="-0.0044382581942268295 0 -0.008123857922795796" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+	<a-curve-point position="-0.0044382581942268295 0 -0.008123857922795796" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+</a-curve>
+		
+	<a-curve id="track1">
+
+		
+
+
+<a-curve-point position="-0.0044382581942268295 0 -0.008123857922795796" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="-0.12105330003209858 0 1.0586711356096137" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="-1.019963674778326 0 0.974989915224558" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="-0.9720441636666686 0 -0.008123857922795796" class="smoke" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="0.8734579342450086 0 -0.008123857922795796" class="unsmoke" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="1.0542162022477248 0 -0.9094620420498121" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="-0.0044382581942268295 0 -0.9286054564640782" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+<a-curve-point position="-0.0044382581942268295 0 -0.008123857922795796" mixin="eye-trigger" geometry="" curve-point=""></a-curve-point>
+
+
+    </a-curve>
+		
+		<a-plane src="assets/marker.png" rotation="-90 0 0" material="" geometry=""></a-plane>
+	<a-entity position="0.4982060646361415 0 -0.5039216465674057" rotation="90 180 0" scale="1 1 0.01" geometry="primitive:torus;arc:270;radius:0.66;segmentsRadial:4;segmentsTubular:100;radiusTubular:0.15000000000000002"></a-entity>
+<a-entity position="0.4982060646361415 0 -0.5039216465674057" rotation="90 180 0" scale="1 1 0.01" geometry="primitive:torus;arc:270;radius:0.66;segmentsRadial:4;segmentsTubular:100;radiusTubular:0.15000000000000002" material="color:#343434;flatShading:true"></a-entity>
+	<a-entity position="-0.5062607553417333 0 0.5044688990187116" rotation="90 0 0" scale="1 1 0.01" geometry="primitive:torus;arc:270;radius:0.66;segmentsRadial:4;segmentsTubular:100;radiusTubular:0.15000000000000002" material="color:#343434;flatShading:true"></a-entity>
+
+		<a-entity id="big-red" scale="1 1 1" alongpath="curve: #loadingtrack; dur:8000; delay:000; rotate:true; loop:true; triggerRadius:0.3; ">
+		<a-entity id="br-container">     
+		<a-entity id="rotation-fix" rotation="0 -90 0" position="0 .55 0 ">	
+			<a-gltf-model id="cart"  position="0 -.5 0" cube-env-map="path:assets/cubemap/" gltf-model="#br-glb">
+				<a-entity id="idle" position="0 0 0" sound="src: url(assets/bigred/idle.mp3); autoplay: false; loop:true;"></a-entity>
+				<a-entity id="throttle" position="0 0 0" sound="src: url(assets/bigred/throttle.mp3); autoplay: false;loop:true;"></a-entity>	
+			</a-gltf-model>	
+			
+				<a-entity id="burnout1" position="-.4 -.5 -0.25" particle-system="particleCount:20; rotationAxis:x; rotationAngle:0; size:1; blending:1; color:#4f371a; velocityValue:-5 1 0; velocitySpread:-1 2 2; accelerationValue: 0 -5 0; maxAge:.3; texture:assets/bigred/smoke.png; enabled:false; "></a-entity>
+
+
+				<a-entity id="burnout2" position="-.4 -.5 0.25" particle-system="particleCount:20; rotationAxis:x; rotationAngle:0; size:1; blending:1; color:#4f371a; velocityValue:-5 1 0; velocitySpread:-1 2 2; accelerationValue: 0 -5 0; maxAge:.3; texture:assets/bigred/smoke.png; enabled:false;"></a-entity>
+
+
+			<a-plane scale="0.3 0.1 0.01" position="0.06146245547263246 -0.026 0.235" src="assets/bigred/sm_logo.jpg" rotation="1.97 2.67 0" ></a-plane>
+					
+			<a-plane scale="0.3 0.1 0.01" position="0.06146245547263246 -0.026 -0.235" src="assets/bigred/sm_logo.jpg" rotation="-1.97 -182.67 0" ></a-plane>			
+		</a-entity>
+		</a-entity>
+	</a-entity>
+					
+		<!-- add a simple camera -->
+		<a-entity camera="" position="0 5 10" look-controls="" wasd-controls="" fly="true" rotation="-36.82 0 -2.4100000000000006" data-aframe-inspector-original-camera=""></a-entity>
+	</a-scene>
+
+		<!-- add a simple camera -->
+		
+		
+			
+		</a-marker>
+
+			<!-- add a simple camera -->
+		<a-entity camera></a-entity>
+			
+			
+	</a-scene>
+	
+	
+	
+<script>
+	 var mover = document.querySelector("#big-red");
+    var smokepoints = document.querySelectorAll(".smoke");
+    var unsmokepoints = document.querySelectorAll(".unsmoke");
+
+    var burnfount1 = document.querySelector("#burnout1");
+    var burnfount2 = document.querySelector("#burnout2");
+
+    var idle = document.querySelector("#idle");
+    var throttle = document.querySelector("#throttle");
+
+var check=1;    for (var i = 0; i < smokepoints.length; i++) {
+        smokepoints[i].addEventListener("alongpath-trigger-activated", function(e){
+            console.log('smoke');
+            console.log(burnfount1);
+            burnfount1.setAttribute('particle-system', 'enabled: true');
+            burnfount2.setAttribute('particle-system', 'enabled: true');
+			throttle.components.sound.playSound();
+			idle.components.sound.stopSound();
+        });
+    }
+
+
+    for (var i = 0; i < unsmokepoints.length; i++) {
+        unsmokepoints[i].addEventListener("alongpath-trigger-activated", function(e){
+            console.log('unsmoke');
+			burnfount1.setAttribute('particle-system', 'enabled: false');
+			burnfount2.setAttribute('particle-system', 'enabled: false');
+			throttle.components.sound.stopSound();
+			idle.components.sound.playSound();
+        });
+    }
+
+
+
+    var starspoints = document.querySelectorAll(".stars");
+    var unstarspoints = document.querySelectorAll(".unstars");
+    var starfount1 = document.querySelector("#stars1");
+    var starfount2 = document.querySelector("#stars2");
+    var wooyeah = document.querySelector('#wooyeah');
+
+    for (var i = 0; i < starspoints.length; i++) {
+        starspoints[i].addEventListener("alongpath-trigger-activated", function(e){
+            console.log('stars');
+            console.log(burnfount1);
+            starfount1.setAttribute('particle-system', 'enabled: true');
+            starfount2.setAttribute('particle-system', 'enabled: true');
+            
+wooyeah.components.sound.playSound();
+
+        });
+    }
+
+    for (var i = 0; i < unstarspoints.length; i++) {
+        unstarspoints[i].addEventListener("alongpath-trigger-activated", function(e){
+            console.log('unstars');
+			starfount1.setAttribute('particle-system', 'enabled: false');
+			starfount2.setAttribute('particle-system', 'enabled: false');
+        });
+    }
+    
+
+
+document.querySelector('#br-glb').addEventListener('loaded', function () {
+	
+	console.log('loaded');
+document.querySelector('#load-message').style.visibility = "hidden";
+document.querySelector('#load-message').style.color = "#F00";
+})
+
+
+var videoStatment = document.querySelector("#videoStatement");
+if (navigator.mediaDevices.getUserMedia) {       
+    navigator.mediaDevices.getUserMedia({video: true})
+  .then(function(stream) {
+    videoStament.innerHTML = "Thanks!";
+  })
+  .catch(function(error) {
+    console.log("Something went wrong!");
+  });
+}
+
+
+</script>
+
+
+
+	
+		
+</body>
+</html>
