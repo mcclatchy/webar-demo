@@ -1,6 +1,6 @@
 		
-	<a-entity light="intensity:3;angle:60.540000000000006" position="-0.2612890122648104 1.5461234405923374 3.955361831865604"></a-entity>
-	<a-entity light="intensity:3;angle:60.540000000000006" position="5.787254405230689 -0.8983049538967702 -2.1779214010397667"></a-entity>
+	<a-entity light="intensity:3;angle:-60.540000000000006" position="-0.2612890122648104 1.5461234405923374 3.955361831865604"></a-entity>
+	<a-entity light="intensity:3;angle:-60.540000000000006" position="5.787254405230689 -0.8983049538967702 -2.1779214010397667"></a-entity>
 					
 			<a-entity id="place" position="-3.2 0.2 0">
 			<a-entity id="center">
@@ -28,9 +28,7 @@
 				</a-animation>
 
 				<!-- NVL TESSERACT LOGO -->
-				<a-entity id="logo" position="3 -0.5 0" rotation="0 180 0">
-				<a-sphere id="center" material="side: back; color: #ffffff; transparent: true; opacity: 0.75"  visible="true" radius="8">
-				</a-sphere>
+				<a-entity id="logo" position="3 -0.5 0" >
 					
 					<a-entity id="yrock">
 						<a-animation 
